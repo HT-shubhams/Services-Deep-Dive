@@ -1,9 +1,11 @@
 import { Injectable, signal } from '@angular/core';
 import { Task, TaskStatus } from './task.model';
 
+/*
 @Injectable({
   providedIn: 'root',
 }) // This is an optimized approach as TasksService is provided at the root level, making it available throughout the application.
+ */
 export class TasksService {
   private tasks = signal<Task[]>([]);
 
