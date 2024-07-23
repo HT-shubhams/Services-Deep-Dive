@@ -1,11 +1,13 @@
-import { Injectable, signal } from '@angular/core';
+import { inject, Injectable, signal } from '@angular/core';
 import { Task, TaskStatus } from './task.model';
+import { LoggingService } from '../logging.service';
 
 @Injectable({
   providedIn: 'root',
-}) // This is an optimized approach as TasksService is provided at the root level, making it available throughout the application.
+})
 export class TasksService {
   private tasks = signal<Task[]>([]);
+  private loggingService = inject(LoggingService);
 
   allTasks = this.tasks.asReadonly();
 
@@ -14,10 +16,9 @@ export class TasksService {
       ...taskData,
       id: Math.random().toString(),
       status: 'OPEN',
-      //   title: taskData.title,
-      //   description: taskData.description,
     };
     this.tasks.update((oldTasks) => [...oldTasks, newTask]);
+    this.loggingService.log(`Task added: ${taskData.title}`);
   }
 
   updateTaskStatus(taskId: string, newStatus: TaskStatus) {
@@ -26,5 +27,6 @@ export class TasksService {
         task.id === taskId ? { ...task, status: newStatus } : task
       )
     );
+    this.loggingService.log(`Task status updated: ${taskId} to ${newStatus}`);
   }
 }
