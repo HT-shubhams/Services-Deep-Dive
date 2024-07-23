@@ -1,6 +1,7 @@
-import { Component, ElementRef, viewChild } from '@angular/core';
+import { Component, ElementRef, viewChild, Inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { TasksService } from '../tasks.service';
+import { TasksSeviceToken } from '../../../main';
 
 @Component({
   selector: 'app-new-task',
@@ -12,15 +13,7 @@ import { TasksService } from '../tasks.service';
 export class NewTaskComponent {
   private formEl = viewChild<ElementRef<HTMLFormElement>>('form');
 
-  // The old way of providing a service instance directly
-  // private tasksService: TasksService;
-
-  // Use Angular's dependency injection mechanism to inject the service instance
-  constructor(private tasksService: TasksService) {
-    // The old way of instantiating a service manually
-    // This is not recommended as it bypasses Angular's DI system
-    // this.tasksService = new TasksService();
-  }
+  constructor(@Inject(TasksSeviceToken) private tasksService: TasksService) {}
 
   onAddTask(title: string, description: string) {
     this.tasksService.addTask({ title, description });

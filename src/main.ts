@@ -1,11 +1,15 @@
 import { bootstrapApplication } from '@angular/platform-browser';
+import { InjectionToken } from '@angular/core';
+
 import { AppComponent } from './app/app.component';
-// import { TasksService } from './app/tasks/tasks.service';
+import { TasksService } from './app/tasks/tasks.service';
 
-/*
+export const TasksSeviceToken = new InjectionToken<TasksService>(
+  'task-service-token'
+);
+
 bootstrapApplication(AppComponent, {
-  providers: [TasksService],
-}).catch((err) => console.error(err)); // Note: Including TasksService here adds it to the bundle during application initialization. This might not be ideal if TasksService is not needed immediately when the application starts.
-*/
+  providers: [{ provide: TasksSeviceToken, useClass: TasksService }],
+}).catch((err) => console.error(err));
 
-bootstrapApplication(AppComponent).catch((err) => console.error(err)); // Bootstrap the application without TasksService in the initial bundle.
+// bootstrapApplication(AppComponent).catch((err) => console.error(err));
